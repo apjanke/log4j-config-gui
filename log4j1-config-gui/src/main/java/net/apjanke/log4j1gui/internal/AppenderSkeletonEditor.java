@@ -13,6 +13,8 @@ import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import static java.util.Objects.requireNonNull;
@@ -127,6 +129,17 @@ class AppenderSkeletonEditor extends AppenderEditor {
             }
         });
         filterTable.setModel(filterTableModel);
+        filterTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = filterTable.rowAtPoint(point);
+                if (e.getClickCount() == 2) {
+                    log.info(sprintf("Double-click on table: point=%s, row=%s", point, row));
+                    editSelectedFilter();
+                }
+            }
+        });
 
         popupMenu = new FilterPopupMenu();
         filterTable.setComponentPopupMenu(popupMenu);

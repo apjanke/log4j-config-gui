@@ -13,6 +13,9 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -28,6 +31,10 @@ public class AppendersEditor extends JPanel {
     private static final Logger log = LogManager.getLogger(AppendersEditor.class);
 
     private static final int LAYOUT_COLUMN = 2;
+    private static final java.util.List<Integer> editableColsList = new ArrayList<>();
+    static {
+        editableColsList.add(1);
+    }
 
     /**
      * The logger that this is editing.
@@ -48,8 +55,8 @@ public class AppendersEditor extends JPanel {
     }
 
     private class MyWidgetSizes extends Log4jConfiguratorGui.WidgetSizes {
-        final int[] colPreferredWidths  = new int[]{150, 100, 300, -1, -1, -1};
-        final int[] colMaxWidths        = new int[]{-1,   -1,  -1, -1, -1, -1};
+        final int[] colPreferredWidths = new int[]{150, 100, 300, -1, -1, -1};
+        final int[] colMaxWidths = new int[]{-1, -1, -1, -1, -1, -1};
         final Dimension windowPreferredSize = new Dimension(800, 400);
         final Dimension windowMinimumSize = new Dimension(400, 200);
         final Dimension buttonPanelMinimumSize = new Dimension(400, 150);
@@ -208,7 +215,23 @@ public class AppendersEditor extends JPanel {
         });
         buttonPanel.add(removeButton);
         buttonPanel.add(removeAllButton);
-        refreshGui();
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                int col = table.columnAtPoint(point);
+                if (e.getClickCount() == 2) {
+                    log.info(sprintf("Double-click on table: point=%s, row=%s", point, row));
+                    if (editableColsList.contains(col)) {
+                        // Let the table cell editor take care of it
+                        return;
+                    }
+                    editSelectedAppender();
+                }
+            }
+        });
 
         // Have to do column sizing after the tableModel has been set
         TableColumnModel colModel = table.getColumnModel();
@@ -221,6 +244,8 @@ public class AppendersEditor extends JPanel {
             }
         }
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        refreshGui();
     }
 
     private class MyPopupMenuListener implements PopupMenuListener {
@@ -292,8 +317,8 @@ public class AppendersEditor extends JPanel {
         loggerMenu.add(addAppenderMenu);
         JMenu loggerTestMenu = new JMenu("Test");
         JMenu testHelloWorldMenu = new JMenu("Hello World");
-        for (Level level: Utils.ALL_LEVELS) {
-            JMenuItem blah = new JMenuItem(""+level);
+        for (Level level : Utils.ALL_LEVELS) {
+            JMenuItem blah = new JMenuItem("" + level);
             final Level thisLevel = level;
             blah.addActionListener(new ActionListener() {
                 @Override
@@ -301,8 +326,8 @@ public class AppendersEditor extends JPanel {
                     // Use System.out to bypass all logging configuration here
                     String msg = "Hello, World!";
                     System.out.format("TEST: Sending message \"%s\" at level %s (level id=%d) to Logger '%s' (%s)\n",
-                            msg, thisLevel, thisLevel.toInt(), logger.getName(), ""+logger);
-                    String logMsg = "TEST: \""+msg+"\" (level " + thisLevel + " on logger " + logger.getName() + ")";
+                            msg, thisLevel, thisLevel.toInt(), logger.getName(), "" + logger);
+                    String logMsg = "TEST: \"" + msg + "\" (level " + thisLevel + " on logger " + logger.getName() + ")";
                     logger.log(thisLevel, msg);
                 }
             });
@@ -390,7 +415,7 @@ public class AppendersEditor extends JPanel {
             } else if (value instanceof ErrorHandler) {
                 str = nameWithoutLog4jPackage(value.toString());
             } else {
-                str = ""+value;
+                str = "" + value;
             }
             setText(str);
         }
