@@ -23,8 +23,8 @@ hs_err_pid*
 
 # IntelliJ artifacts
 /java/target
+workspace.xml
 
 # Artifacts
 dist
-log4j1-config-gui/.idea/workspace.xml
 
