@@ -16,7 +16,7 @@ class TelnetAppenderEditor extends AppenderSkeletonEditor {
 
     private final JTextField portField = new JTextField();
 
-    private TelnetAppenderEditor(TelnetAppender appender) {
+    TelnetAppenderEditor(TelnetAppender appender) {
         super(appender);
         this.appender = requireNonNull(appender);
     }
@@ -27,6 +27,9 @@ class TelnetAppenderEditor extends AppenderSkeletonEditor {
 
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
+
+        portField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
+        portField.setPreferredSize(smallTextFieldPreferredSize);
 
         Object[] arrangement = {
                 "Port",     portField

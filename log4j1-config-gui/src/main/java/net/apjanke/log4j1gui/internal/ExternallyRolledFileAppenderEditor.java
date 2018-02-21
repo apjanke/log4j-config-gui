@@ -22,11 +22,15 @@ class ExternallyRolledFileAppenderEditor extends RollingFileAppenderEditor {
         GBC gbc = controlPaneGBC;
 
         portField = new JTextField();
+        portField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
+        portField.setPreferredSize(smallTextFieldPreferredSize);
 
-        p.add(new JLabel("Port:"), gbc);
-        gbc.gridx = 1;  gbc.weightx = 1;
-        p.add(portField, gbc);
-        gbc.nextRow();  gbc.weightx = 0;
+        Object[] arrangement = {
+                "Port",     portField
+        };
+        addControlsFromArrangement(p, gbc, arrangement);
+
+        refreshGuiThisLevel();
     }
 
     private void refreshGuiThisLevel() {

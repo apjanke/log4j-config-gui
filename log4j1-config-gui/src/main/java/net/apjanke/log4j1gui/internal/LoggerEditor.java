@@ -86,7 +86,8 @@ public class LoggerEditor extends ThingEditor {
         levelComboBox.setSelectedItem(logger.getLevel());
         additivityCheckBox.setSelected(logger.getAdditivity());
         loggerRepositoryField.setText(""+logger.getLoggerRepository());
-        resourceBundleField.setText(""+logger.getResourceBundle());
+        resourceBundleField.setText((logger.getResourceBundle() == null) ? ""
+                : ""+logger.getResourceBundle());
         updateItemEnabling();
     }
 

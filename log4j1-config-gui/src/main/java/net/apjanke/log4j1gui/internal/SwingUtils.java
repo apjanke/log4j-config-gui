@@ -21,4 +21,40 @@ public class SwingUtils {
     public static Border createEmptyBorderPx(int margin) {
         return BorderFactory.createEmptyBorder(px(margin), px(margin), px(margin), px(margin));
     }
+
+    public static class IntegerInputVerifier extends InputVerifier {
+        boolean allowBlank = false;
+        @Override
+        public boolean verify(JComponent input) {
+            String str = ((JTextField)input).getText();
+            if (allowBlank && (str.isEmpty())) {
+                return true;
+            }
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                Integer.parseInt(str);
+                return true;
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+        }
+    }
+
+    public static class DoubleInputVerifier extends InputVerifier {
+        boolean allowBlank = false;
+        @Override
+        public boolean verify(JComponent input) {
+            String str = ((JTextField)input).getText();
+            if (allowBlank && (str.isEmpty())) {
+                return true;
+            }
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                Double.parseDouble(str);
+                return true;
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+        }
+    }
 }

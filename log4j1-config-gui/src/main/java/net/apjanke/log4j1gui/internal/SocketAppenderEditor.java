@@ -14,11 +14,11 @@ class SocketAppenderEditor extends AppenderSkeletonEditor {
 
     private final SocketAppender appender;
 
-    private JTextField applicationField;
-    private JCheckBox locationInfoField;
-    private JTextField portField;
-    private JTextField reconnectionDelayField;
-    private JTextField remoteHostField;
+    private JTextField applicationField = new JTextField();
+    private JCheckBox locationInfoField = new JCheckBox();
+    private JTextField portField = new JTextField();
+    private JTextField reconnectionDelayField = new JTextField();
+    private JTextField remoteHostField = new JTextField();
 
     SocketAppenderEditor(SocketAppender appender) {
         super(appender);
@@ -32,11 +32,14 @@ class SocketAppenderEditor extends AppenderSkeletonEditor {
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
 
-        applicationField = new JTextField();
-        locationInfoField = new JCheckBox();
-        portField = new JTextField();
-        reconnectionDelayField = new JTextField();
-        remoteHostField = new JTextField();
+        portField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
+        reconnectionDelayField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
+
+        for (JComponent c : new JComponent[] {
+                applicationField, portField, reconnectionDelayField, remoteHostField
+        }) {
+            c.setPreferredSize(smallTextFieldPreferredSize);
+        }
 
         Object[] arrangement = {
                 "Remote Host",  remoteHostField,

@@ -7,8 +7,8 @@ import javax.swing.*;
 class RollingFileAppenderEditor extends FileAppenderEditor {
     private final RollingFileAppender appender;
 
-    private JTextField maxBackupIndexField;
-    private JTextField maximumFileSizeField;
+    private JTextField maxBackupIndexField = new JTextField();
+    private JTextField maximumFileSizeField = new JTextField();
 
     RollingFileAppenderEditor(RollingFileAppender appender) {
         super(appender);
@@ -22,8 +22,10 @@ class RollingFileAppenderEditor extends FileAppenderEditor {
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
 
-        maxBackupIndexField = new JTextField();
-        maximumFileSizeField = new JTextField();
+        maxBackupIndexField.setPreferredSize(smallTextFieldPreferredSize);
+        maximumFileSizeField.setPreferredSize(smallTextFieldPreferredSize);
+        maxBackupIndexField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
+        maximumFileSizeField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
 
         Object[] arrangement = {
                 "Max Backup Index",     maxBackupIndexField,

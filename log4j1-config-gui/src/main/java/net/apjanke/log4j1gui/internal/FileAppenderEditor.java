@@ -31,8 +31,9 @@ class FileAppenderEditor extends WriterAppenderEditor {
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
 
-        bufferSizeTextField.setPreferredSize(textFieldPreferredSize);
+        bufferSizeTextField.setPreferredSize(smallTextFieldPreferredSize);
         fileTextField.setPreferredSize(textFieldPreferredSize);
+        bufferSizeTextField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
 
         Object[] arrangement = {
                 "File",     fileTextField,

@@ -31,6 +31,12 @@ class SyslogAppenderEditor extends AppenderSkeletonEditor {
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
 
+        for (JComponent c : new JComponent[] {
+                facilityField, syslogHostField
+        }) {
+            c.setPreferredSize(smallTextFieldPreferredSize);
+        }
+
         Object[] arrangement = {
                 "Syslog Host",      syslogHostField,
                 "Facility",         facilityField,

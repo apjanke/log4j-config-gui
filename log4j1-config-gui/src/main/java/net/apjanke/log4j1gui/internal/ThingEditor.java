@@ -26,6 +26,10 @@ public abstract class ThingEditor extends JPanel {
      * This default size is pretty wide, to accommodate fields that contain file paths.
      */
     final Dimension textFieldPreferredSize = px(new Dimension(500, SwingUtils.singleRowTextFieldHeight));
+    /**
+     * The preferred size for smaller text fields, like those that contain a number.
+     */
+    final Dimension smallTextFieldPreferredSize = px(new Dimension(250, SwingUtils.singleRowTextFieldHeight));
 
     abstract void initializeGui();
 

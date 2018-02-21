@@ -73,7 +73,15 @@ class SMTPAppenderEditor extends AppenderSkeletonEditor {
         SMTPUsernameField = new JTextField();
         subjectField = new JTextField();
         toField = new JTextField();
+        bufferSizeField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
 
+        JComponent[] bigFields = {
+                bccField, bufferSizeField, ccField, evaluatorClassField, fromField, SMTPHostField,
+                SMTPPasswordField, SMTPUsernameField, subjectField, toField
+        };
+        for (JComponent c : bigFields) {
+            c.setPreferredSize(textFieldPreferredSize);
+        }
 
         Object[] arrangement = {
                 "From", fromField,

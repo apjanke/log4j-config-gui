@@ -11,11 +11,11 @@ class JDBCAppenderEditor extends AppenderSkeletonEditor {
 
     private final JDBCAppender appender;
 
-    private JTextField urlField;
-    private JTextField userField;
-    private JPasswordField passwordField;
-    private JTextField sqlField;
-    private JTextField bufferSizeField;
+    private JTextField urlField = new JTextField();
+    private JTextField userField = new JTextField();
+    private JPasswordField passwordField = new JPasswordField();
+    private JTextField sqlField = new JTextField();
+    private JTextField bufferSizeField = new JTextField();
 
     JDBCAppenderEditor(JDBCAppender appender) {
         super(appender);
@@ -29,11 +29,12 @@ class JDBCAppenderEditor extends AppenderSkeletonEditor {
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
 
-        urlField = new JTextField();
-        userField = new JTextField();
-        passwordField = new JPasswordField();
-        sqlField = new JTextField();
-        bufferSizeField = new JTextField();
+        urlField.setPreferredSize(textFieldPreferredSize);
+        userField.setPreferredSize(smallTextFieldPreferredSize);
+        passwordField.setPreferredSize(smallTextFieldPreferredSize);
+        sqlField.setPreferredSize(textFieldPreferredSize);
+        bufferSizeField.setPreferredSize(smallTextFieldPreferredSize);
+        bufferSizeField.setInputVerifier(new SwingUtils.IntegerInputVerifier());
 
         Object[] arrangement = {
                 "URL",      urlField,

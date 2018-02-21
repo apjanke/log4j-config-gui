@@ -6,6 +6,7 @@ import org.apache.log4j.lf5.LF5Appender;
 import org.apache.log4j.net.SMTPAppender;
 import org.apache.log4j.net.SocketAppender;
 import org.apache.log4j.net.SyslogAppender;
+import org.apache.log4j.net.TelnetAppender;
 import org.apache.log4j.nt.NTEventLogAppender;
 import org.apache.log4j.varia.*;
 
@@ -67,6 +68,8 @@ public abstract class AppenderEditor extends ThingEditor {
             return new SocketAppenderEditor((SocketAppender) appender);
         } else if (appClass == SyslogAppender.class) {
             return new SyslogAppenderEditor((SyslogAppender) appender);
+        } else if (appClass == TelnetAppender.class) {
+            return new TelnetAppenderEditor((TelnetAppender) appender);
         } else {
             throw new UnrecognizedAppenderException("No appender editor defined for class " + appender.getClass().getName());
         }

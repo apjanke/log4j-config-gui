@@ -100,8 +100,12 @@ public class Utils {
     private static final String[] LOG4J_PREFIXES_TO_STRIP = new String[] {
             "org.apache.log4j.extras.",
             "org.apache.log4j.varia.",
-            "org.apache.log4j.",
             "org.apache.log4j.helpers.",
+            "org.apache.log4j.net.",
+            "org.apache.log4j.receivers.rewrite.",
+            "org.apache.log4j.jdbc.",
+            "org.apache.log4j.lf5.",
+            "org.apache.log4j.",
     };
 
     public static String nameWithoutLog4jPackage(String str) {
