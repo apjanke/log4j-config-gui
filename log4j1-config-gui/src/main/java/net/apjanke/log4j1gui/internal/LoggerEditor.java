@@ -63,12 +63,7 @@ public class LoggerEditor extends ThingEditor {
                 "Logger Repository",    loggerRepositoryField,
                 "Resource Bundle",      resourceBundleField,
         };
-        for (int i = 0; i < arrangement.length; i+=2) {
-            p.add(new JLabel(arrangement[i] +":"), gbc);
-            gbc.gridx = 1;  gbc.weightx = 1;
-            p.add(((JComponent)arrangement[i+1]), gbc);
-            gbc.nextRow(); gbc.weightx = 0;
-        }
+        addControlsFromArrangement(p, gbc, arrangement);
         holder.add(p, holderGbc);
         holderGbc.nextRow();
 

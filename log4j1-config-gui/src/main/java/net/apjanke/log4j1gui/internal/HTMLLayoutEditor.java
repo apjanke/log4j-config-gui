@@ -3,21 +3,17 @@ package net.apjanke.log4j1gui.internal;
 import org.apache.log4j.HTMLLayout;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 
 import javax.swing.*;
-import java.awt.*;
 
-import static net.apjanke.log4j1gui.internal.Utils.px;
-
-public class HTMLLayoutEditor extends LayoutEditor {
+class HTMLLayoutEditor extends LayoutEditor {
 
     private static final Logger log = LogManager.getLogger(HTMLLayoutEditor.class);
 
     private final HTMLLayout layout;
 
-    private JTextField titleField = new JTextField();
-    private JCheckBox locationInfoField = new JCheckBox();
+    private final JTextField titleField = new JTextField();
+    private final JCheckBox locationInfoField = new JCheckBox();
 
     HTMLLayoutEditor(HTMLLayout layout) {
         super(layout);
@@ -26,29 +22,22 @@ public class HTMLLayoutEditor extends LayoutEditor {
 
     @Override
     public void initializeGui() {
-        setLayout(new GridBagLayout());
-        setBorder(SwingUtils.createEmptyBorderPx(20));
-        setPreferredSize(px(new Dimension(1200,200)));
+        super.initializeGui();
 
-        GBC gbc = new GBC();
-
+        JComponent p = controlPane;
+        GBC gbc = controlPaneGBC;
 
         Object[] arrangement = {
                 "Title",      titleField,
                 "Location Info",    locationInfoField,
         };
-        JComponent p = this;
-        for (int i = 0; i < arrangement.length; i+=2) {
-            p.add(new JLabel(arrangement[i] +":"), gbc);
-            gbc.gridx = 1;  gbc.weightx = 1;
-            p.add(((JComponent)arrangement[i+1]), gbc);
-            gbc.nextRow(); gbc.weightx = 0;
-        }
+        addControlsFromArrangement(p, gbc, arrangement);
 
         refreshGuiThisLevel();
     }
 
-    private void refreshGui() {
+    void refreshGui() {
+        super.refreshGui();
         refreshGuiThisLevel();
     }
 
@@ -59,6 +48,7 @@ public class HTMLLayoutEditor extends LayoutEditor {
 
     @Override
     public void applyChanges() {
+        super.applyChanges();
         layout.setTitle(titleField.getText());
         layout.setLocationInfo(locationInfoField.isSelected());
     }

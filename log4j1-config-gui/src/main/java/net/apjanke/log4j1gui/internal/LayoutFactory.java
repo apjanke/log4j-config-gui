@@ -2,7 +2,7 @@ package net.apjanke.log4j1gui.internal;
 
 import org.apache.log4j.Layout;
 
-public interface LayoutFactory {
+interface LayoutFactory {
 
     Iterable<Class<? extends Layout>> getSupportedLayoutClasses();
 

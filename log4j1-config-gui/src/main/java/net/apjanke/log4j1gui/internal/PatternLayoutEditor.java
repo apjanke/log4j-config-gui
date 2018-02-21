@@ -17,7 +17,7 @@ class PatternLayoutEditor extends LayoutEditor {
 
     private final PatternLayout layout;
 
-    private JTextField patternField = new JTextField();
+    private final JTextField patternField = new JTextField();
 
     PatternLayoutEditor(PatternLayout layout) {
         super(layout);
@@ -26,11 +26,10 @@ class PatternLayoutEditor extends LayoutEditor {
 
     @Override
     public void initializeGui() {
-        setLayout(new GridBagLayout());
-        setBorder(SwingUtils.createEmptyBorderPx(20));
-        setPreferredSize(px(new Dimension(1200,200)));
+        super.initializeGui();
 
-        GBC gbc = new GBC();
+        JComponent p = controlPane;
+        GBC gbc = controlPaneGBC;
 
         patternField.setMinimumSize(px(new Dimension(600, SwingUtils.singleRowTextFieldHeight)));
         patternField.setPreferredSize(px(new Dimension(800, SwingUtils.singleRowTextFieldHeight)));
@@ -38,18 +37,13 @@ class PatternLayoutEditor extends LayoutEditor {
         Object[] arrangement = {
                 "Pattern",      patternField,
         };
-        JComponent p = this;
-        for (int i = 0; i < arrangement.length; i+=2) {
-            p.add(new JLabel(arrangement[i] +":"), gbc);
-            gbc.gridx = 1;  gbc.weightx = 1;
-            p.add(((JComponent)arrangement[i+1]), gbc);
-            gbc.nextRow(); gbc.weightx = 0;
-        }
+        addControlsFromArrangement(p, gbc, arrangement);
 
         refreshGuiThisLevel();
     }
 
-    private void refreshGui() {
+    void refreshGui() {
+        super.refreshGui();
         refreshGuiThisLevel();
     }
 
@@ -59,6 +53,7 @@ class PatternLayoutEditor extends LayoutEditor {
 
     @Override
     public void applyChanges() {
+        super.applyChanges();
         layout.setConversionPattern(patternField.getText());
     }
 }

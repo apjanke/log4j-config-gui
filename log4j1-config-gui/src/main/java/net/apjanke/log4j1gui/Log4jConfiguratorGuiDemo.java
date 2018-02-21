@@ -200,7 +200,10 @@ public class Log4jConfiguratorGuiDemo {
         ExternallyRolledFileAppender erfa = new ExternallyRolledFileAppender();
         erfa.setFile(tempFile3);
         lg.addAppender(erfa);
-
+        lg = getLog("foo.bar.with.ttcc.SomeClass");
+        appender = new ConsoleAppender();
+        appender.setLayout(new TTCCLayout());
+        lg.addAppender(appender);
     }
 
     private static boolean isRunningOnMac() {

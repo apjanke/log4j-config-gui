@@ -19,6 +19,14 @@ public abstract class ThingEditor extends JPanel {
     /** The thing that this is editing. */
     private final Object thing;
 
+    /**
+     * The preferred size that most text fields in the control pane should use. Treat this
+     * as read-only.
+     *
+     * This default size is pretty wide, to accommodate fields that contain file paths.
+     */
+    final Dimension textFieldPreferredSize = px(new Dimension(500, SwingUtils.singleRowTextFieldHeight));
+
     abstract void initializeGui();
 
     abstract void applyChanges();
@@ -29,6 +37,15 @@ public abstract class ThingEditor extends JPanel {
 
     String getTitle() {
         return nameWithoutLog4jPackage(""+thing);
+    }
+
+    void addControlsFromArrangement(JComponent component, GBC gbc, Object[] arrangement) {
+        for (int i = 0; i < arrangement.length; i+=2) {
+            component.add(new JLabel(arrangement[i] +":"), gbc);
+            gbc.gridx = 1;  gbc.weightx = 1;
+            component.add(((JComponent)arrangement[i+1]), gbc);
+            gbc.nextRow(); gbc.weightx = 0;
+        }
     }
 
     /**

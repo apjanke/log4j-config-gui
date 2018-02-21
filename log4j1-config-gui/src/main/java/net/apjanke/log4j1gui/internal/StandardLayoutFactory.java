@@ -1,9 +1,7 @@
 package net.apjanke.log4j1gui.internal;
 
-import net.apjanke.log4j1gui.Configuration;
 import org.apache.log4j.*;
 import org.apache.log4j.helpers.DateLayout;
-import org.apache.log4j.spi.Filter;
 import org.apache.log4j.xml.XMLLayout;
 
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ public class StandardLayoutFactory implements LayoutFactory {
         tmp.add(HTMLLayout.class);
         tmp.add(SimpleLayout.class);
         tmp.add(XMLLayout.class);
+        tmp.add(TTCCLayout.class);
         myLayoutClasses = Collections.unmodifiableList(tmp);
     }
 

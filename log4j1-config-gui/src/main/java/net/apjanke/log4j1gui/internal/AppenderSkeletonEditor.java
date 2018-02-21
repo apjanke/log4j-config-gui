@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import static java.util.Objects.requireNonNull;
 import static net.apjanke.log4j1gui.internal.Utils.nameWithoutLog4jPackage;
-import static net.apjanke.log4j1gui.internal.Utils.px;
 import static net.apjanke.log4j1gui.internal.Utils.sprintf;
 
 /**
@@ -39,14 +38,6 @@ class AppenderSkeletonEditor extends AppenderEditor {
     private final FilterTableModelAdapter filterTableModel = new FilterTableModelAdapter();
 
     private final java.util.List<JComponent> thingsNeedingFilterSelection = new ArrayList<>();
-
-    /**
-     * The preferred size that most text fields in the control pane should use. Treat this
-     * as read-only.
-     *
-     * This default size is pretty wide, to accommodate fields that contain file paths.
-     */
-    final Dimension textFieldPreferredSize = px(new Dimension(500, SwingUtils.singleRowTextFieldHeight));
 
     /**
      * The subpane containing control widgets that are label/value pairs. This has a
@@ -81,14 +72,7 @@ class AppenderSkeletonEditor extends AppenderEditor {
      * @param arrangement arrangement Object[] structure
      */
     void addControlsFromArrangement(Object[] arrangement) {
-        JComponent p = controlPane;
-        GBC gbc = controlPaneGBC;
-        for (int i = 0; i < arrangement.length; i+=2) {
-            p.add(new JLabel(arrangement[i] +":"), gbc);
-            gbc.gridx = 1;  gbc.weightx = 1;
-            p.add(((JComponent)arrangement[i+1]), gbc);
-            gbc.nextRow(); gbc.weightx = 0;
-        }
+        addControlsFromArrangement(controlPane, controlPaneGBC, arrangement);
     }
 
     /**
@@ -135,7 +119,6 @@ class AppenderSkeletonEditor extends AppenderEditor {
                 Point point = e.getPoint();
                 int row = filterTable.rowAtPoint(point);
                 if (e.getClickCount() == 2) {
-                    log.info(sprintf("Double-click on table: point=%s, row=%s", point, row));
                     editSelectedFilter();
                 }
             }

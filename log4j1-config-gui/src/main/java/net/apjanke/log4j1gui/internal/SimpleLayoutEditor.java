@@ -9,21 +9,11 @@ import org.apache.log4j.SimpleLayout;
  * This is an empty implementation, because there's nothing to edit on a
  * SimpleLayoutEditor.
  */
-public class SimpleLayoutEditor extends LayoutEditor {
+class SimpleLayoutEditor extends LayoutEditor {
     private static final Logger log = LogManager.getLogger(PatternLayoutEditor.class);
 
     SimpleLayoutEditor(SimpleLayout layout) {
         super(layout);
-    }
-
-    @Override
-    void initializeGui() {
-        // NOP
-    }
-
-    @Override
-    void applyChanges() {
-        // NOP
     }
 
 }

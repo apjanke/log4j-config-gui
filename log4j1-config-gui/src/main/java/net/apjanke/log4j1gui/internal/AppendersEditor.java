@@ -223,7 +223,6 @@ public class AppendersEditor extends JPanel {
                 int row = table.rowAtPoint(point);
                 int col = table.columnAtPoint(point);
                 if (e.getClickCount() == 2) {
-                    log.info(sprintf("Double-click on table: point=%s, row=%s", point, row));
                     if (editableColsList.contains(col)) {
                         // Let the table cell editor take care of it
                         return;
