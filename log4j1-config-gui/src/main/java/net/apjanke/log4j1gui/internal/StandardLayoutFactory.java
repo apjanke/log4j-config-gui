@@ -34,7 +34,7 @@ public class StandardLayoutFactory implements LayoutFactory {
     @Override
     public Layout createLayout(Class<? extends Layout> layoutClass) {
         try {
-            return layoutClass.newInstance();
+            return layoutClass.getConstructor().newInstance();
         } catch (Exception e) {
             log.error(sprintf("Error while instantiating %s: %s",
                     layoutClass.getName(), e.getMessage()), e);

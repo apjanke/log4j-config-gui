@@ -322,7 +322,7 @@ class AppenderSkeletonEditor extends AppenderEditor {
 
     private void addOrInsertFilter(Class<? extends Filter> filterClass) {
         try {
-            Filter newFilter = filterClass.newInstance();
+            Filter newFilter = filterClass.getConstructor().newInstance();
             if (FilterEditor.isEditable(filterClass)) {
                 FilterEditor editor = FilterEditor.createEditorFor(newFilter);
                 FilterEditor.MyDialog dialog = editor.showInModalDialog();

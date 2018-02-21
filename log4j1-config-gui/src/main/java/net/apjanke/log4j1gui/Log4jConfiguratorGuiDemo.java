@@ -122,7 +122,7 @@ public class Log4jConfiguratorGuiDemo {
     private static void setMacDockIcon(Image image) {
         try {
             Class<?> appClass = Class.forName("com.apple.eawt.Application");
-            Object application = appClass.newInstance().getClass().getMethod("getApplication")
+            Object application = appClass.getConstructor().newInstance().getClass().getMethod("getApplication")
                     .invoke(null);
             application.getClass().getMethod("setDockIconImage", java.awt.Image.class)
                     .invoke(application, image);

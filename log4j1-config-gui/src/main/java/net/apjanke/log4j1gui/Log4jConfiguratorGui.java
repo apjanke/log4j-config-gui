@@ -412,7 +412,7 @@ public class Log4jConfiguratorGui extends JPanel {
                 case 2:
                     return logger.getAdditivity();
                 case 3:
-                    return Collections.list(logger.getAllAppenders());
+                    return Utils.getAllAppenders(logger);
                 default:
                     throw new ArrayIndexOutOfBoundsException(columnIndex);
             }

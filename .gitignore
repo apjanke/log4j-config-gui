@@ -22,7 +22,7 @@
 hs_err_pid*
 
 # IntelliJ artifacts
-/java/target
+target/
 workspace.xml
 
 # Artifacts

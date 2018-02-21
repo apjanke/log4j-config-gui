@@ -172,8 +172,7 @@ public class AppendersEditor extends JPanel {
 
     public void initializeGui() {
         table = new JTable();
-        //noinspection unchecked
-        final AppenderListTableModel tableModel = new AppenderListTableModel(Collections.list(logger.getAllAppenders()));
+        final AppenderListTableModel tableModel = new AppenderListTableModel(Utils.getAllAppenders(logger));
         table.setModel(tableModel);
         MyWidgetSizes sizes = new MyWidgetSizes();
         sizes.scaleForHiDpiMode();
@@ -273,8 +272,7 @@ public class AppendersEditor extends JPanel {
     }
 
     public void refreshGui() {
-        //noinspection unchecked
-        appenders = Collections.list(logger.getAllAppenders());
+        appenders = Utils.getAllAppenders(logger);
         tableModel = new AppenderListTableModel(appenders);
         table.setModel(tableModel);
     }
@@ -283,8 +281,7 @@ public class AppendersEditor extends JPanel {
      * Refresh the data underlying the tableModel, without creating a new tableModel.
      */
     private void refreshTableModel() {
-        //noinspection unchecked
-        tableModel.setAppenders(Collections.list(logger.getAllAppenders()));
+        tableModel.setAppenders(Utils.getAllAppenders(logger));
     }
 
     public JDialog showInModalDialog() {

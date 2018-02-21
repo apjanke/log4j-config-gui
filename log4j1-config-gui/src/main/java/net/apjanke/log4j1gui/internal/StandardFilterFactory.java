@@ -42,7 +42,7 @@ public class StandardFilterFactory implements FilterFactory {
                     + filterClass.getName());
         }
         try {
-            return filterClass.newInstance();
+            return filterClass.getConstructor().newInstance();
         } catch (Exception e) {
             log.error(sprintf("Error while instantiating %s: %s",
                     filterClass.getName(), e.getMessage()), e);

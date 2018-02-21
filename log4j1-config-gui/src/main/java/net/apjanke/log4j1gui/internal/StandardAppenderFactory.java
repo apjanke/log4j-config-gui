@@ -68,7 +68,7 @@ public class StandardAppenderFactory implements AppenderFactory {
             return appender;
         } else if (myAppenderClasses.contains(appenderClass)) {
             try {
-                return appenderClass.newInstance();
+                return appenderClass.getConstructor().newInstance();
             } catch (Exception e) {
                 log.error(sprintf("Error while instantiating %s: %s",
                         appenderClass.getName(), e.getMessage()), e);

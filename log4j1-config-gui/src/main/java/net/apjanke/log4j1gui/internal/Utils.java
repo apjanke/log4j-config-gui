@@ -49,6 +49,7 @@ public class Utils {
      * the Enumeration-to-Collection conversion in one place. (Doing it directly requires
      * unchecked-assignment-warning suppression to get it in a one-liner, and that's
      * gross.)
+     * @param logger the logger to get appenders from
      * @return List of all the current loggers
      */
     public static java.util.List<Appender> getAllAppenders(Logger logger) {
