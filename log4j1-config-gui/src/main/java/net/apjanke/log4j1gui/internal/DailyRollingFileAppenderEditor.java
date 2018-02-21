@@ -8,7 +8,7 @@ class DailyRollingFileAppenderEditor extends FileAppenderEditor {
 
     private final DailyRollingFileAppender appender;
 
-    private JTextField datePatternField;
+    private final JTextField datePatternField = new JTextField();
 
     DailyRollingFileAppenderEditor(DailyRollingFileAppender appender) {
         super(appender);
@@ -22,7 +22,7 @@ class DailyRollingFileAppenderEditor extends FileAppenderEditor {
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
 
-        datePatternField = new JTextField();
+        datePatternField.setPreferredSize(textFieldPreferredSize);
 
         Object[] arrangement = {
                 "Date Pattern", datePatternField,

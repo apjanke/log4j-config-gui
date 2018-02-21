@@ -1,9 +1,7 @@
 package net.apjanke.log4j1gui.internal;
 
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Layout;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import net.apjanke.log4j1gui.Log4jConfiguratorGui;
+import org.apache.log4j.*;
 import org.apache.log4j.spi.Filter;
 
 import javax.swing.*;
@@ -30,10 +28,10 @@ class AppenderSkeletonEditor extends AppenderEditor {
 
     private final AppenderSkeleton appender;
 
-    private JLabel layoutField;
-    private JTextField nameField;
-    private PriorityComboBox priorityComboBox;
-    private JLabel errorHandlerField;
+    private final JLabel layoutField = new JLabel();
+    private final JTextField nameField = new JTextField();
+    private final PriorityComboBox priorityComboBox = new PriorityComboBox();
+    private final JLabel errorHandlerField = new JLabel();
     private final JTable filterTable = new JTable();
     private JPopupMenu popupMenu;
     private final FilterTableModelAdapter filterTableModel = new FilterTableModelAdapter();
@@ -43,8 +41,10 @@ class AppenderSkeletonEditor extends AppenderEditor {
     /**
      * The preferred size that most text fields in the control pane should use. Treat this
      * as read-only.
+     *
+     * This default size is pretty wide, to accommodate fields that contain file paths.
      */
-    final Dimension textFieldPreferredSize = px(new Dimension(400, 15));
+    final Dimension textFieldPreferredSize = px(new Dimension(500, SwingUtils.singleRowTextFieldHeight));
 
     /**
      * The subpane containing control widgets that are label/value pairs. This has a
@@ -104,34 +104,18 @@ class AppenderSkeletonEditor extends AppenderEditor {
         GBC gbc = new GBC();
         JLabel l;
 
-        p.add(new JLabel("Name:"), gbc);
-        gbc.gridx = 1;
-        nameField = new JTextField();
-        nameField.setPreferredSize(px(new Dimension(400, 15)));
-        p.add(nameField, gbc);
-        gbc.nextRow();
-        gbc.weightx = 0;
-        p.add(new JLabel("Layout:"), gbc);
-        gbc.gridx = 1;
-        gbc.weightx = 1;
-        layoutField = new JLabel();
-        p.add(layoutField, gbc);
-        gbc.nextRow();
-        gbc.weightx = 0;
-        p.add(new JLabel("Threshold:"), gbc);
-        gbc.gridx = 1;
-        gbc.weightx = 1;
-        priorityComboBox = new PriorityComboBox();
-        p.add(priorityComboBox, gbc);
-        gbc.nextRow();
-        gbc.weightx = 0;
-        p.add(new JLabel("Error Handler:"), gbc);
-        gbc.gridx = 1;
-        gbc.weightx = 1;
-        errorHandlerField = new JLabel();
-        p.add(errorHandlerField, gbc);
-        gbc.nextRow();
-        gbc.weightx = 0;
+        nameField.setPreferredSize(textFieldPreferredSize);
+
+        controlPane = p;
+        controlPaneGBC = gbc;
+
+        Object[] arrangement = {
+                "Name",     nameField,
+                "Layout",   layoutField,
+                "Threshold",    priorityComboBox,
+                "Error Handler",    errorHandlerField,
+        };
+        addControlsFromArrangement(arrangement);
 
         JPanel filterPanel = new JPanel();
         filterPanel.setLayout(new BorderLayout());
@@ -143,13 +127,13 @@ class AppenderSkeletonEditor extends AppenderEditor {
             }
         });
         filterTable.setModel(filterTableModel);
-        filterTable.setComponentPopupMenu(new FilterPopupMenu());
+
+        popupMenu = new FilterPopupMenu();
+        filterTable.setComponentPopupMenu(popupMenu);
 
         pane.add(p);
         pane.add(filterPanel);
         this.add(pane, BorderLayout.CENTER);
-        controlPane = p;
-        controlPaneGBC = gbc;
 
         menuBar = new MenuBar();
         refreshGuiThisLevel();
@@ -177,8 +161,38 @@ class AppenderSkeletonEditor extends AppenderEditor {
         }
     }
 
+    private void editLayout() {
+        Layout layout = appender.getLayout();
+        LayoutEditor editor = LayoutEditor.createEditorFor(layout);
+        editor.showInModalDialog().setVisible(true);
+        refreshGui();
+    }
+
     private class MenuBar extends JMenuBar {
         private MenuBar() {
+            JMenu appenderMenu = new JMenu("Appender");
+            add(appenderMenu);
+            JMenuItem editLayoutItem = new JMenuItem("Edit Layout");
+            editLayoutItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    editLayout();
+                }
+            });
+            appenderMenu.add(editLayoutItem);
+            LayoutFactory layoutFactory = new StandardLayoutFactory();
+            JMenu setNewLayoutMenu = new JMenu("New Layout");
+            appenderMenu.add(setNewLayoutMenu);
+            for (final Class<? extends Layout> layoutClass : layoutFactory.getSupportedLayoutClasses()) {
+                JMenuItem newLayoutItem = new JMenuItem(nameWithoutLog4jPackage(layoutClass.getName()));
+                newLayoutItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        setNewLayout(layoutClass);
+                    }
+                });
+                setNewLayoutMenu.add(newLayoutItem);
+            }
             JMenu filterMenu = new JMenu("Filter");
             add(filterMenu);
             JMenu addFilterMenu = new JMenu("Add Filter");
@@ -202,6 +216,17 @@ class AppenderSkeletonEditor extends AppenderEditor {
             });
             thingsNeedingFilterSelection.add(removeFilterItem);
             filterMenu.add(removeFilterItem);
+            JMenu viewMenu = new JMenu("View");
+            add(viewMenu);
+            JMenuItem refreshMenuItem = new JMenuItem("Refresh");
+            viewMenu.add(refreshMenuItem);
+            refreshMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    refreshGui();
+                }
+            });
+            viewMenu.add(refreshMenuItem);
         }
     }
 
@@ -211,13 +236,8 @@ class AppenderSkeletonEditor extends AppenderEditor {
     }
 
     private void refreshGuiThisLevel() {
-        nameField.setName(appender.getName());
-        Layout layout = appender.getLayout();
-        if (null == layout) {
-            layoutField.setText("");
-        } else {
-            layoutField.setText(nameWithoutLog4jPackage(layout.toString()));
-        }
+        nameField.setText(appender.getName());
+        layoutField.setText(Log4jConfiguratorGui.layoutString(appender.getLayout()));
         priorityComboBox.setSelectedItem(appender.getThreshold());
         errorHandlerField.setText(nameWithoutLog4jPackage("" + appender.getErrorHandler()));
         filterTableModel.setHeadFilter(appender.getFirstFilter());
@@ -239,6 +259,7 @@ class AppenderSkeletonEditor extends AppenderEditor {
     @Override
     void applyChanges() {
         appender.setName(nameField.getText());
+        appender.setThreshold((Priority) priorityComboBox.getSelectedItem());
     }
 
     private void removeSelectedFilter() {
@@ -260,6 +281,25 @@ class AppenderSkeletonEditor extends AppenderEditor {
             f.setNext(newNext);
         }
         refreshGui();
+    }
+
+    private void setNewLayout(Class<? extends Layout> layoutClass) {
+        try {
+            LayoutFactory layoutFactory = new StandardLayoutFactory();
+            Layout newLayout = layoutFactory.createLayout(layoutClass);
+            LayoutEditor editor = LayoutEditor.createEditorFor(newLayout);
+            LayoutEditor.MyDialog dialog = editor.showInModalDialog();
+            dialog.setVisible(true);
+            if (dialog.getUserSelection() == DialogOption.OK) {
+                appender.setLayout(newLayout);
+                refreshGui();
+            }
+        } catch (Exception ex) {
+            log.error(sprintf("Error while setting new Layout (%s): %s", layoutClass.getName(), ex.getMessage()), ex);
+            JOptionPane.showMessageDialog(this,
+                    sprintf("Error while setting new Layout (%s): %s", layoutClass.getName(), ex.getMessage()),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void editSelectedFilter() {

@@ -5,7 +5,6 @@ import net.apjanke.log4j1gui.Log4jConfiguratorGui;
 import org.apache.log4j.*;
 import org.apache.log4j.spi.ErrorHandler;
 import org.apache.log4j.spi.Filter;
-import org.apache.log4j.varia.NullAppender;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -105,7 +104,6 @@ public class AppendersEditor extends JPanel {
                 return;
             }
             LayoutEditor editor = LayoutEditor.createEditorFor(layout);
-            editor.initializeGui();
             editor.showInModalDialog().setVisible(true);
             tableModel.fireTableCellUpdated(row, LAYOUT_COLUMN);
         } catch (Exception err) {
@@ -133,6 +131,38 @@ public class AppendersEditor extends JPanel {
         refreshTableModel();
     }
 
+    private class PopupMenu extends JPopupMenu {
+        PopupMenu() {
+            addPopupMenuListener(new MyPopupMenuListener());
+            JMenuItem editAppenderItem = new JMenuItem("Edit Appender");
+            editAppenderItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    editSelectedAppender();
+                }
+            });
+            add(editAppenderItem);
+            JMenuItem editLayoutItem = new JMenuItem("Edit Layout");
+            editLayoutItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    editLayoutForSelectedAppender();
+                }
+            });
+            add(editLayoutItem);
+            JMenu setLayoutMenu = new JMenu("Set New Layout");
+            add(setLayoutMenu);
+            LayoutFactory layoutFactory = new StandardLayoutFactory();
+            for (final Class<? extends Layout> klass : layoutFactory.getSupportedLayoutClasses()) {
+                JMenuItem setLayoutItem = new SetLayoutMenuItem(klass.getSimpleName(), klass);
+                setLayoutMenu.add(setLayoutItem);
+            }
+            JMenuItem setErrorHandlerItem = new JMenuItem("Set Error Handler...");
+            setErrorHandlerItem.setEnabled(false);
+            add(setErrorHandlerItem);
+        }
+    }
+
     public void initializeGui() {
         table = new JTable();
         //noinspection unchecked
@@ -143,38 +173,7 @@ public class AppendersEditor extends JPanel {
         setPreferredSize(sizes.windowPreferredSize);
         setMinimumSize(sizes.windowPreferredSize);
 
-        popupMenu = new JPopupMenu();
-        popupMenu.addPopupMenuListener(new MyPopupMenuListener());
-        JMenuItem editAppenderItem = new JMenuItem("Edit Appender");
-        editAppenderItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editSelectedAppender();
-            }
-        });
-        popupMenu.add(editAppenderItem);
-        JMenuItem editLayoutItem = new JMenuItem("Edit Layout");
-        editLayoutItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                editLayoutForSelectedAppender();
-            }
-        });
-        popupMenu.add(editLayoutItem);
-        JMenu setLayoutMenu = new JMenu("Set New Layout");
-        JMenuItem setPatternLayoutItem = new SetLayoutMenuItem("Pattern Layout", PatternLayout.class);
-        JMenuItem setEnhancedPatternLayoutItem = null;
-        if (Configuration.hasLog4jExtras()) {
-            setEnhancedPatternLayoutItem = new SetLayoutMenuItem("Enhanced Pattern Layout", EnhancedPatternLayout.class);
-        }
-        setLayoutMenu.add(setPatternLayoutItem);
-        if (setEnhancedPatternLayoutItem != null)
-            setLayoutMenu.add(setEnhancedPatternLayoutItem);
-        popupMenu.add(setLayoutMenu);
-        JMenuItem setErrorHandlerItem = new JMenuItem("Set Error Handler...");
-        setErrorHandlerItem.setEnabled(false);
-        popupMenu.add(setErrorHandlerItem);
-
+        popupMenu = new PopupMenu();
         table.setComponentPopupMenu(popupMenu);
 
         MyCellRenderer cellRenderer = new MyCellRenderer();
@@ -269,7 +268,7 @@ public class AppendersEditor extends JPanel {
         dialog.setLayout(new BorderLayout());
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.getContentPane().add(this, BorderLayout.CENTER);
-        dialog.setSize(px(new Dimension(600, 300)));
+        dialog.setSize(px(new Dimension(800, 300)));
 
         // TODO: Deactivate the "Set Layout" menu if there's no selection
         // TODO: Deactivate the "Set Layout" menu if the selected appender does not take a Layout
@@ -278,35 +277,22 @@ public class AppendersEditor extends JPanel {
         JMenu addAppenderMenu = new JMenu("Add Appender");
         JMenuItem addNullAppenderMenuItem = new JMenuItem("Null Appender");
         addAppenderMenu.add(addNullAppenderMenuItem);
-        addNullAppenderMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                logger.addAppender(new NullAppender());
-                refreshGui();
-            }
-        });
-        JMenuItem addConsoleAppenderMenuItem = new JMenuItem("Console Appender");
-        addConsoleAppenderMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                logger.addAppender(new ConsoleAppender());
-                refreshGui();
-            }
-        });
-        addAppenderMenu.add(addConsoleAppenderMenuItem);
+        final AppenderFactory appenderFactory = new StandardAppenderFactory();
+        for (final Class<? extends Appender> appenderClass : appenderFactory.getSupportedAppenderClasses()) {
+            JMenuItem addAppenderItem = new JMenuItem(nameWithoutLog4jPackage(appenderClass.getName()));
+            addAppenderItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    logger.addAppender(appenderFactory.createAppender(appenderClass));
+                    refreshGui();
+                }
+            });
+            addAppenderMenu.add(addAppenderItem);
+        }
         loggerMenu.add(addAppenderMenu);
         JMenu loggerTestMenu = new JMenu("Test");
-        Level[] allLevels = new Level[] {
-                Level.ALL,
-                Level.ERROR,
-                Level.WARN,
-                Level.INFO,
-                Level.DEBUG,
-                Level.TRACE,
-                Level.OFF,
-        };
         JMenu testHelloWorldMenu = new JMenu("Hello World");
-        for (Level level: allLevels) {
+        for (Level level: Utils.ALL_LEVELS) {
             JMenuItem blah = new JMenuItem(""+level);
             final Level thisLevel = level;
             blah.addActionListener(new ActionListener() {
@@ -359,136 +345,28 @@ public class AppendersEditor extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     int row = table.getSelectedRow();
                     if (row == -1) {
-                        JOptionPane.showMessageDialog(null, "You must select an appender to use this action",
-                                "No selection", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     Appender appender = appenders.get(row);
                     log.info(sprintf("SetLayoutMenuItem: selected: %s: %s", getText(), layoutClass.getName()));
-                    doSetting(appender, row);
+                    doSetNewLayout(appender, row);
                 }
             });
         }
 
-        private void doSetting(Appender appender, int row) {
+        private void doSetNewLayout(Appender appender, int row) {
             try {
-                Layout newLayout = layoutClass.newInstance();
+                LayoutFactory layoutFactory = new StandardLayoutFactory();
+                Layout newLayout = layoutFactory.createLayout(layoutClass);
                 LayoutEditor editor = LayoutEditor.createEditorFor(newLayout);
-                editor.initializeGui();
                 LayoutEditor.MyDialog dialog = editor.showInModalDialog();
                 dialog.setVisible(true);
-                switch (dialog.getUserSelection()) {
-                    case OK:
-                        log.info(sprintf("OK selected: set new layout: %s", newLayout));
-                        appender.setLayout(newLayout);
-                        refreshGui();
-                        break;
-                    case CANCEL:
-                        // NOP
-                        log.info("CANCEL selected");
-                        break;
-                    default:
-                        // User closed with no selection; ignore
-                        // NOP
-                        log.info("Some other option selected");
-                        break;
+                if (dialog.getUserSelection() == DialogOption.OK) {
+                    appender.setLayout(newLayout);
+                    refreshGui();
                 }
             } catch (Exception e) {
-                log.error(sprintf("Error while trying to set new layout: %s", e.getMessage()), e);
-            }
-        }
-    }
-
-    private static class AppenderListTableModel extends AbstractTableModel {
-        private java.util.List<Appender> appenders;
-        private static final String[] columnNames = new String[]{
-                "Class", "Name", "Layout", "Filters", "ErrorHandler", "Object ID"
-        };
-
-        AppenderListTableModel(java.util.List<Appender> appenders) {
-            this.appenders = requireNonNull(appenders);
-        }
-
-        void setAppenders(java.util.List<Appender> appenders) {
-            this.appenders = requireNonNull(appenders);
-            fireTableDataChanged();
-        }
-
-        @Override
-        public int getRowCount() {
-            return appenders.size();
-        }
-
-        @Override
-        public int getColumnCount() {
-            return 6;
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            Appender appender = appenders.get(rowIndex);
-            switch (columnIndex) {
-                case 0:
-                    return appender.getClass();
-                case 1:
-                    return appender.getName();
-                case 2:
-                    return appender.getLayout();
-                case 3:
-                    return appender.getFilter();
-                case 4:
-                    return appender.getErrorHandler();
-                case 5:
-                    return ""+appender.toString();
-                default:
-                    throw new ArrayIndexOutOfBoundsException(columnIndex);
-            }
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            return columnNames[column];
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            switch (columnIndex) {
-                case 0:
-                    return Class.class;
-                case 1:
-                    return String.class;
-                case 2:
-                    return Layout.class;
-                case 3:
-                    return Filter.class;
-                case 4:
-                    return ErrorHandler.class;
-                case 5:
-                    return String.class;
-                default:
-                    return super.getColumnClass(columnIndex);
-            }
-        }
-
-        @Override
-        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            Appender appender = appenders.get(rowIndex);
-            switch (columnIndex) {
-                case 1:
-                    appender.setName((String)aValue);
-                    break;
-                default:
-                    throw new IllegalArgumentException(sprintf("Value setting not allowed for this field (column %d)", columnIndex));
-            }
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            switch (column) {
-                case 1:
-                    return true;
-                default:
-                    return false;
+                log.error(sprintf("Error while trying to set new Layout: %s", e.getMessage()), e);
             }
         }
     }
@@ -501,12 +379,10 @@ public class AppendersEditor extends JPanel {
                 str = "";
             } else if (value instanceof Class) {
                 str = nameWithoutLog4jPackage(((Class) value).getName());
-            } else if (value instanceof EnhancedPatternLayout) {
-                EnhancedPatternLayout pl = (EnhancedPatternLayout) value;
-                str = sprintf("EnhancedPatternLayout: \"%s\"", pl.getConversionPattern());
             } else if (value instanceof PatternLayout) {
-                PatternLayout pl = (PatternLayout) value;
-                str = sprintf("PatternLayout: \"%s\"", pl.getConversionPattern());
+                str = Log4jConfiguratorGui.layoutString((PatternLayout) value);
+            } else if (value instanceof EnhancedPatternLayout) {
+                str = Log4jConfiguratorGui.layoutString((EnhancedPatternLayout) value);
             } else if (value instanceof Layout) {
                 str = nameWithoutLog4jPackage(value.toString());
             } else if (value instanceof Filter) {

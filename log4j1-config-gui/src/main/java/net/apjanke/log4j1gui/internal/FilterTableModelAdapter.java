@@ -69,7 +69,7 @@ class FilterTableModelAdapter extends AbstractTableModel {
         Filter filter = filters.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return ""+filter;
+                return nameWithoutLog4jPackage(""+filter);
             case 1:
                 return nameWithoutLog4jPackage(filter.getClass().getName());
             case 2:

@@ -1,25 +1,25 @@
 package net.apjanke.log4j1gui.internal;
 
+import org.apache.log4j.HTMLLayout;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.EnhancedPatternLayout;
+import org.apache.log4j.PatternLayout;
 
 import javax.swing.*;
 import java.awt.*;
 
 import static net.apjanke.log4j1gui.internal.Utils.px;
 
-/**
- * TODO: Maybe consider making CR/LF/control characters in the conversionPattern visible?
- */
-class EnhancedPatternLayoutEditor extends LayoutEditor {
-    private static final Logger log = LogManager.getLogger(PatternLayoutEditor.class);
+public class HTMLLayoutEditor extends LayoutEditor {
 
-    private final EnhancedPatternLayout layout;
+    private static final Logger log = LogManager.getLogger(HTMLLayoutEditor.class);
 
-    private JTextField patternField = new JTextField();
+    private final HTMLLayout layout;
 
-    EnhancedPatternLayoutEditor(EnhancedPatternLayout layout) {
+    private JTextField titleField = new JTextField();
+    private JCheckBox locationInfoField = new JCheckBox();
+
+    HTMLLayoutEditor(HTMLLayout layout) {
         super(layout);
         this.layout = layout;
     }
@@ -32,11 +32,10 @@ class EnhancedPatternLayoutEditor extends LayoutEditor {
 
         GBC gbc = new GBC();
 
-        patternField.setMinimumSize(px(new Dimension(600, SwingUtils.singleRowTextFieldHeight)));
-        patternField.setPreferredSize(px(new Dimension(800, SwingUtils.singleRowTextFieldHeight)));
 
         Object[] arrangement = {
-                "Pattern",      patternField,
+                "Title",      titleField,
+                "Location Info",    locationInfoField,
         };
         JComponent p = this;
         for (int i = 0; i < arrangement.length; i+=2) {
@@ -54,11 +53,14 @@ class EnhancedPatternLayoutEditor extends LayoutEditor {
     }
 
     private void refreshGuiThisLevel() {
-        patternField.setText(layout.getConversionPattern());
+        titleField.setText(layout.getTitle());
+        locationInfoField.setEnabled(layout.getLocationInfo());
     }
 
     @Override
     public void applyChanges() {
-        layout.setConversionPattern(patternField.getText());
+        layout.setTitle(titleField.getText());
+        layout.setLocationInfo(locationInfoField.isSelected());
     }
+
 }

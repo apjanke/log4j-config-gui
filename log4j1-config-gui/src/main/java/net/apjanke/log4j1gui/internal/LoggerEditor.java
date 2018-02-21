@@ -56,10 +56,10 @@ public class LoggerEditor extends ThingEditor {
         GBC gbc = new GBC();
 
         Object[] arrangement = new Object[] {
-                "Logger",       loggerDisplayField,
                 "Name",         nameField,
                 "Level",        levelComboBox,
                 "Additivity",   additivityCheckBox,
+                "Logger",       loggerDisplayField,
                 "Logger Repository",    loggerRepositoryField,
                 "Resource Bundle",      resourceBundleField,
         };
@@ -86,7 +86,7 @@ public class LoggerEditor extends ThingEditor {
     }
 
     private void refreshGuiThisLevel() {
-        loggerDisplayField.setText(""+logger);
+        loggerDisplayField.setText(nameWithoutLog4jPackage(""+logger));
         nameField.setText(logger.getName());
         levelComboBox.setSelectedItem(logger.getLevel());
         additivityCheckBox.setSelected(logger.getAdditivity());
@@ -152,6 +152,16 @@ public class LoggerEditor extends ThingEditor {
             });
             appenderMenu.add(removeAppenderItem);
             thingsNeedingAppenderSelection.add(removeAppenderItem);
+            JMenu viewMenu = new JMenu("View");
+            JMenuItem refreshMenuItem = new JMenuItem("Refresh");
+            viewMenu.add(refreshMenuItem);
+            refreshMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    refreshGui();
+                }
+            });
+            add(viewMenu);
         }
     }
 

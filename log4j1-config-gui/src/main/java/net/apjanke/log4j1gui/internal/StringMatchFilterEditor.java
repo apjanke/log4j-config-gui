@@ -36,7 +36,7 @@ public class StringMatchFilterEditor extends FilterEditor {
         gbc.nextRow();
         add(new JLabel("String:"), gbc);
         gbc.gridx = 1;
-        stringField.setPreferredSize(px(new Dimension(400, 20)));
+        stringField.setPreferredSize(px(new Dimension(400, SwingUtils.singleRowTextFieldHeight)));
         stringField.setText(filter.getStringToMatch());
         add(stringField, gbc);
         gbc.nextRow();

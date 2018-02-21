@@ -297,18 +297,7 @@ public class Log4jConfiguratorGui extends JPanel {
                 for (Appender appender : appenders) {
                     if (appender instanceof ConsoleAppender) {
                         ConsoleAppender ca = (ConsoleAppender) appender;
-                        Layout layout = ca.getLayout();
-                        String str;
-                        if (layout instanceof PatternLayout) {
-                            PatternLayout pl = (PatternLayout) layout;
-                            str = sprintf("%s(\"%s\")", "ConsoleAppender<PL>", pl.getConversionPattern());
-                        } else if (layout instanceof EnhancedPatternLayout) {
-                            EnhancedPatternLayout pl = (EnhancedPatternLayout) layout;
-                            str = sprintf("%s(\"%s\")", "ConsoleAppender<EPL>", pl.getConversionPattern());
-                        } else {
-                            str = sprintf("%s(%s)", "ConsoleAppender", ""+layout);
-                        }
-                        strs.add(str);
+                        strs.add("ConsoleAppender: " + layoutString(ca.getLayout()));
                     } else {
                         strs.add(nameWithoutLog4jPackage("" + appender));
                     }
@@ -318,6 +307,29 @@ public class Log4jConfiguratorGui extends JPanel {
                 log.error(sprintf("Error rendering Appender list: %s", e.getMessage()), e);
             }
         }
+    }
+
+    /**
+     * A compact, human-readable representation of a Layout. This will include the pattern strings
+     * for Pattern-related layouts.
+     * @param layout The layout to construct a display string for
+     * @return The display string for that Layout, non-null
+     */
+    public static String layoutString(Layout layout) {
+        if (null == layout) {
+            return "";
+        }
+        String str;
+        if (layout instanceof PatternLayout) {
+            PatternLayout pl = (PatternLayout) layout;
+            str = sprintf("\"%s\" (<PL>)",  pl.getConversionPattern());
+        } else if (layout instanceof EnhancedPatternLayout) {
+            EnhancedPatternLayout epl = (EnhancedPatternLayout) layout;
+            str = sprintf("\"%s\" (<EPL>)", epl.getConversionPattern());
+        } else {
+            str = ""+layout;
+        }
+        return str;
     }
 
     /**
