@@ -1,7 +1,7 @@
 # This Makefile is just for building the release distribution.
 # It's not needed for just building or running the program
 
-.PHONY: dist
+.PHONY: dist clean
 
 PROGRAM=log4j1-config-gui
 VERSION=$(shell cat VERSION)
@@ -14,3 +14,7 @@ dist: target/${PROGRAM}-${VERSION}.jar target/${PROGRAM}-${VERSION}-javadoc.jar 
 	cp -R $(FILES) $(DISTDIR)
 	cd dist; tar czf ${PROGRAM}-${VERSION}.tgz --exclude='*.DS_Store' ${PROGRAM}-${VERSION}
 	cd dist; zip -rq ${PROGRAM}-${VERSION}.zip ${PROGRAM}-${VERSION} -x '*.DS_Store'
+
+clean:
+	rm -rf dist/*
+	rm -rf target/*

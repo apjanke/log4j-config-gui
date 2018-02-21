@@ -6,7 +6,7 @@
 
     <groupId>net.apjanke.log4j-config-gui</groupId>
     <artifactId>log4j1-config-gui</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <name>log4j1-config-gui</name>
     <description>A configuration GUI for Apache Log4j 1.2</description>
@@ -30,9 +30,9 @@
     </developers>
 
     <scm>
-      <connection>scm:git:git://github.com/apjanke/log4j1-config-gui.git</connection>
-      <developerConnection>scm:git:ssh://github.com:apjanke/log4j1-config-gui.git</developerConnection>
-      <url>https://github.com/apjanke/log4j-config-gui</url>
+        <connection>scm:git:git://github.com/apjanke/log4j1-config-gui.git</connection>
+        <developerConnection>scm:git:ssh://github.com:apjanke/log4j1-config-gui.git</developerConnection>
+        <url>https://github.com/apjanke/log4j-config-gui</url>
     </scm>
 
     <properties>
@@ -114,7 +114,38 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
