@@ -117,6 +117,7 @@ public abstract class ThingEditor extends JPanel {
     public MyDialog showInModalDialog() {
         initializeGui();
         final MyDialog dialog = new MyDialog(this);
+        dialog.setLocationByPlatform(true);
         dialog.setTitle(getTitle());
         dialog.initializeGui();
         return dialog;

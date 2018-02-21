@@ -111,7 +111,6 @@ public class Log4jConfiguratorGui extends JPanel {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2) {
-                    log.info(sprintf("Double-click on table: point=%s, row=%s", point, row));
                     editSelectedLogger();
                 }
             }
@@ -541,9 +540,6 @@ public class Log4jConfiguratorGui extends JPanel {
     private class MyTableModelListener implements TableModelListener {
         @Override
         public void tableChanged(TableModelEvent e) {
-            String info = String.format("type %d: [rows %d:%d, column %d]", e.getType(),
-                    e.getFirstRow(), e.getLastRow(), e.getColumn());
-            log.debug(sprintf("tableChanged() : %s", info));
             int col = e.getColumn();
             for (int row = e.getFirstRow(); row <= e.getLastRow(); row++) {
                 Logger logger = loggersForRows.get(row);
@@ -552,12 +548,10 @@ public class Log4jConfiguratorGui extends JPanel {
                         if (col == LEVEL_COLUMN || col == TableModelEvent.ALL_COLUMNS) {
                             Level newLevel = (Level) tableModel.getValueAt(row, LEVEL_COLUMN);
                             logger.setLevel(newLevel);
-                            log.debug(sprintf("Set logger %s to level %s", logger.getName(), newLevel));
                         }
                         if (col == ADDITIVITY_COLUMN || col == TableModelEvent.ALL_COLUMNS) {
                             boolean newAdditivity = (Boolean) tableModel.getValueAt(row, ADDITIVITY_COLUMN);
                             logger.setAdditivity(newAdditivity);
-                            log.debug(sprintf("Set logger %s additivity to %s", logger.getName(), newAdditivity));
                         }
                         break;
                     case TableModelEvent.INSERT:
@@ -581,6 +575,7 @@ public class Log4jConfiguratorGui extends JPanel {
      */
     public JFrame showInFrame() {
         JFrame frame = new JFrame("Log4jConfiguratorGui");
+        frame.setLocationByPlatform(true);
         if (iconImages != null) {
             frame.setIconImages(iconImages);
         }

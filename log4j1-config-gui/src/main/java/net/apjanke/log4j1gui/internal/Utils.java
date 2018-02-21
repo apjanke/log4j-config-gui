@@ -101,6 +101,7 @@ public class Utils {
             "org.apache.log4j.extras.",
             "org.apache.log4j.varia.",
             "org.apache.log4j.",
+            "org.apache.log4j.helpers.",
     };
 
     public static String nameWithoutLog4jPackage(String str) {

@@ -289,6 +289,7 @@ public class AppendersEditor extends JPanel {
 
     public JDialog showInModalDialog() {
         JDialog dialog = new JDialog();
+        dialog.setLocationByPlatform(true);
         dialog.setLayout(new BorderLayout());
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.getContentPane().add(this, BorderLayout.CENTER);
