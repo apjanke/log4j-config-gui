@@ -14,11 +14,11 @@ class SocketAppenderEditor extends AppenderSkeletonEditor {
 
     private final SocketAppender appender;
 
-    private JTextField applicationField = new JTextField();
-    private JCheckBox locationInfoField = new JCheckBox();
-    private JTextField portField = new JTextField();
-    private JTextField reconnectionDelayField = new JTextField();
-    private JTextField remoteHostField = new JTextField();
+    private final JTextField applicationField = new JTextField();
+    private final JCheckBox locationInfoField = new JCheckBox();
+    private final JTextField portField = new JTextField();
+    private final JTextField reconnectionDelayField = new JTextField();
+    private final JTextField remoteHostField = new JTextField();
 
     SocketAppenderEditor(SocketAppender appender) {
         super(appender);

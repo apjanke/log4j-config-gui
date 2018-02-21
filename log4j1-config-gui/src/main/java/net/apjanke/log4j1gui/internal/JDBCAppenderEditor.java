@@ -11,11 +11,11 @@ class JDBCAppenderEditor extends AppenderSkeletonEditor {
 
     private final JDBCAppender appender;
 
-    private JTextField urlField = new JTextField();
-    private JTextField userField = new JTextField();
-    private JPasswordField passwordField = new JPasswordField();
-    private JTextField sqlField = new JTextField();
-    private JTextField bufferSizeField = new JTextField();
+    private final JTextField urlField = new JTextField();
+    private final JTextField userField = new JTextField();
+    private final JPasswordField passwordField = new JPasswordField();
+    private final JTextField sqlField = new JTextField();
+    private final JTextField bufferSizeField = new JTextField();
 
     JDBCAppenderEditor(JDBCAppender appender) {
         super(appender);

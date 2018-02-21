@@ -7,8 +7,8 @@ import javax.swing.*;
 class RollingFileAppenderEditor extends FileAppenderEditor {
     private final RollingFileAppender appender;
 
-    private JTextField maxBackupIndexField = new JTextField();
-    private JTextField maximumFileSizeField = new JTextField();
+    private final JTextField maxBackupIndexField = new JTextField();
+    private final JTextField maximumFileSizeField = new JTextField();
 
     RollingFileAppenderEditor(RollingFileAppender appender) {
         super(appender);

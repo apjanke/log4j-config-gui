@@ -23,13 +23,9 @@ public class SwingUtils {
     }
 
     public static class IntegerInputVerifier extends InputVerifier {
-        boolean allowBlank = false;
         @Override
         public boolean verify(JComponent input) {
             String str = ((JTextField)input).getText();
-            if (allowBlank && (str.isEmpty())) {
-                return true;
-            }
             try {
                 //noinspection ResultOfMethodCallIgnored
                 Integer.parseInt(str);
@@ -40,14 +36,10 @@ public class SwingUtils {
         }
     }
 
-    public static class DoubleInputVerifier extends InputVerifier {
-        boolean allowBlank = false;
+    private static class DoubleInputVerifier extends InputVerifier {
         @Override
         public boolean verify(JComponent input) {
             String str = ((JTextField)input).getText();
-            if (allowBlank && (str.isEmpty())) {
-                return true;
-            }
             try {
                 //noinspection ResultOfMethodCallIgnored
                 Double.parseDouble(str);
