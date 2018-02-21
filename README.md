@@ -5,6 +5,8 @@ This is a configuration GUI for Apache Log4j 1.2.
 
 It supports in-process configuration of Log4j in the current program, so it's useful for GUI applications that use Log4j. It does not support configuration of Log4j in external processes.
 
+![Example log4j1-config-gui screenshot](doc/log4j1-config-gui-example-screenshot-1-scaled.png)
+
 ##  Usage
 
 To use this in your program, include the JAR file on the classpath, and then create and display a `Log4jConfiguratorGui`.
