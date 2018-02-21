@@ -2,7 +2,7 @@ TODO for log4j1-config-gui
 =============================
 
 * Add Cmd-W for close; other hotkey support
-* Validation and error handling for numeric-valued text fields
+* Friendlier validation and error handling for numeric-valued text fields
 * Extensible menu options for appender editors
  * To support those with "activateOptions()" or other methods that aren't property setters
 * When resizing the Logger editor window, the Appenders widget should expand to fill horizontally, and the controls panel should stay left-aligned.

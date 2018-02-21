@@ -25,6 +25,26 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="AppenderSkeletonEditor.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/AppenderSkeletonEditor.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="428">
+                  <caret line="92" column="51" lean-forward="true" selection-start-line="92" selection-start-column="51" selection-end-line="92" selection-end-column="51" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="GBC.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/GBC.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="105">
+                  <caret line="9" column="25" lean-forward="false" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="SwingUtils.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/SwingUtils.java">
               <provider selected="true" editor-type-id="text-editor">
@@ -35,11 +55,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Log4jConfiguratorGui.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Log4jConfiguratorGui.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/Log4jConfiguratorGui.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="251">
-                  <caret line="93" column="8" lean-forward="false" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="8" />
+                  <caret line="93" column="13" lean-forward="true" selection-start-line="93" selection-start-column="13" selection-end-line="93" selection-end-column="13" />
                   <folding />
                 </state>
               </provider>
@@ -50,6 +70,16 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="743">
                   <caret line="105" column="24" lean-forward="false" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ThingEditor.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/ThingEditor.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="270">
+                  <caret line="29" column="84" lean-forward="false" selection-start-line="29" selection-start-column="84" selection-end-line="29" selection-end-column="84" />
                   <folding />
                 </state>
               </provider>
@@ -141,7 +171,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/DialogOption.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/GBC.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/Configuration.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/LevelComboBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/LevelMatchFilterEditor.java" />
@@ -191,6 +220,7 @@
         <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/Utils.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/JDBCAppenderEditor.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/SwingUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/GBC.java" />
       </list>
     </option>
   </component>
@@ -555,12 +585,12 @@
       <workItem from="1519060760203" duration="5111000" />
       <workItem from="1519068520983" duration="29000" />
       <workItem from="1519068728745" duration="77188000" />
-      <workItem from="1519195407554" duration="17519000" />
+      <workItem from="1519195407554" duration="18148000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="99847000" />
+    <option name="totallyTimeSpent" value="100476000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="23" y="23" width="1977" height="1254" extended-state="0" />
@@ -575,7 +605,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32990506" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3714044" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3714044" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -624,16 +654,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="698">
-          <caret line="56" column="25" lean-forward="false" selection-start-line="56" selection-start-column="25" selection-end-line="56" selection-end-column="25" />
-          <folding>
-            <element signature="e#353#386#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/awt/BorderLayout.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5940">
@@ -826,14 +846,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/AppenderSkeletonEditor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="92" column="51" lean-forward="true" selection-start-line="92" selection-start-column="51" selection-end-line="92" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/DenyAllFilterEditor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -949,14 +961,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/ThingEditor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="29" column="84" lean-forward="false" selection-start-line="29" selection-start-column="84" selection-end-line="29" selection-end-column="84" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/SMTPAppenderEditor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="373">
@@ -1048,7 +1052,31 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/Log4jConfiguratorGui.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
-          <caret line="93" column="8" lean-forward="false" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="8" />
+          <caret line="93" column="13" lean-forward="true" selection-start-line="93" selection-start-column="13" selection-end-line="93" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/ThingEditor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="29" column="84" lean-forward="false" selection-start-line="29" selection-start-column="84" selection-end-line="29" selection-end-column="84" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/AppenderSkeletonEditor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="428">
+          <caret line="92" column="51" lean-forward="true" selection-start-line="92" selection-start-column="51" selection-end-line="92" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/apjanke/log4j1gui/internal/GBC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="9" column="25" lean-forward="false" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
           <folding />
         </state>
       </provider>
