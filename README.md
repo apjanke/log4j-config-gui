@@ -26,15 +26,15 @@ Or download the [distribution](https://github.com/apjanke/log4j-config-gui/relea
 Then, in your program, create and display a `Log4jConfiguratorGui`.
 
 ```
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Log4jConfiguratorGui gui = new Log4jConfiguratorGui();
-                gui.initializeGui();
-                JFrame frame = gui.showInFrame();
-                frame.setVisible(true);
-            }
+    SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            Log4jConfiguratorGui gui = new Log4jConfiguratorGui();
+            gui.initializeGui();
+            JFrame frame = gui.showInFrame();
+            frame.setVisible(true);
         }
+    }
 ```
 
 See the `net.apjanke.log4j1gui.Log4jConfiguratorGuiDemo` example program in the distribution for more details.
