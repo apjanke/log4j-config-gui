@@ -39,7 +39,14 @@ public class StandardAppenderFactory implements AppenderFactory {
             log.debug("JMS not detected; not adding JMSAppender.");
         }
         tmp.add(LF5Appender.class);
-        tmp.add(RewriteAppender.class);
+        // RewriteAppender is only available if Log4j Extras is loaded
+        try {
+            Class.forName("org.apache.log4j.receivers.rewrite.RewriteAppender");
+            tmp.add(RewriteAppender.class);
+        } catch (ClassNotFoundException e) {
+            log.debug(sprintf("Class %s not found; looks like Log4j Extras is absent. Skipping.",
+                    "org.apache.log4j.receivers.rewrite.RewriteAppender"));
+        }
         tmp.add(SMTPAppender.class);
         tmp.add(SocketAppender.class);
         tmp.add(SocketHubAppender.class);

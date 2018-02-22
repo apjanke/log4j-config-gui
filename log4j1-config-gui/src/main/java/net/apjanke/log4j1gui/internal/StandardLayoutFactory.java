@@ -2,6 +2,7 @@ package net.apjanke.log4j1gui.internal;
 
 import org.apache.log4j.*;
 import org.apache.log4j.helpers.DateLayout;
+import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.xml.XMLLayout;
 
 import java.util.ArrayList;
@@ -14,11 +15,20 @@ public class StandardLayoutFactory implements LayoutFactory {
     private static final Logger log = LogManager.getLogger(StandardLayoutFactory.class);
 
     private static final List<Class<? extends Layout>> myLayoutClasses;
+
     static {
         List<Class<? extends Layout>> tmp = new ArrayList<>();
         tmp.add(PatternLayout.class);
-        tmp.add(EnhancedPatternLayout.class);
-        tmp.add(DateLayout.class);
+        // EnhancedPatternLayout is only available if Log4j Extras is loaded
+        try {
+            Class.forName("org.apache.log4j.EnhancedPatternLayout");
+            tmp.add(EnhancedPatternLayout.class);
+        } catch (ClassNotFoundException e) {
+            log.debug(sprintf("Class %s not found; looks like Log4j Extras is absent. Skipping.",
+                    "org.apache.log4j.EnhancedPatternLayout"));
+        }
+        // DateLayout is abstract; can't instantiate it
+        //tmp.add(DateLayout.class);
         tmp.add(HTMLLayout.class);
         tmp.add(SimpleLayout.class);
         tmp.add(XMLLayout.class);

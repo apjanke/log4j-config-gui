@@ -6,7 +6,7 @@
 
     <groupId>net.apjanke.log4j-config-gui</groupId>
     <artifactId>log4j1-config-gui</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 
     <name>log4j1-config-gui</name>
     <description>A configuration GUI for Apache Log4j 1.2</description>

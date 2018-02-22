@@ -160,7 +160,7 @@ class AppenderSkeletonEditor extends AppenderEditor {
     private void editLayout() {
         Layout layout = appender.getLayout();
         LayoutEditor editor = LayoutEditor.createEditorFor(layout);
-        editor.showInModalDialog().setVisible(true);
+        editor.showInModalDialog(SwingUtilities.getWindowAncestor(this)).setVisible(true);
         refreshGui();
     }
 
@@ -284,7 +284,7 @@ class AppenderSkeletonEditor extends AppenderEditor {
             LayoutFactory layoutFactory = new StandardLayoutFactory();
             Layout newLayout = layoutFactory.createLayout(layoutClass);
             LayoutEditor editor = LayoutEditor.createEditorFor(newLayout);
-            LayoutEditor.MyDialog dialog = editor.showInModalDialog();
+            LayoutEditor.MyDialog dialog = editor.showInModalDialog(SwingUtilities.getWindowAncestor(this));
             dialog.setVisible(true);
             if (dialog.getUserSelection() == DialogOption.OK) {
                 appender.setLayout(newLayout);
@@ -308,7 +308,7 @@ class AppenderSkeletonEditor extends AppenderEditor {
         Filter filter = filters.get(row);
         try {
             editor = FilterEditor.createEditorFor(filter);
-            FilterEditor.MyDialog dialog = editor.showInModalDialog();
+            FilterEditor.MyDialog dialog = editor.showInModalDialog(SwingUtilities.getWindowAncestor(this));
             dialog.setVisible(true);
             DialogOption choice = dialog.getUserSelection();
         } catch (Exception e) {
@@ -325,7 +325,7 @@ class AppenderSkeletonEditor extends AppenderEditor {
             Filter newFilter = filterClass.getConstructor().newInstance();
             if (FilterEditor.isEditable(filterClass)) {
                 FilterEditor editor = FilterEditor.createEditorFor(newFilter);
-                FilterEditor.MyDialog dialog = editor.showInModalDialog();
+                FilterEditor.MyDialog dialog = editor.showInModalDialog(SwingUtilities.getWindowAncestor(this));
                 dialog.setVisible(true);
                 DialogOption choice = dialog.getUserSelection();
                 if (DialogOption.OK != choice) {

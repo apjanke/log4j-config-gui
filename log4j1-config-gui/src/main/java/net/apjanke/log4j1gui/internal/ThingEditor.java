@@ -67,7 +67,8 @@ public abstract class ThingEditor extends JPanel {
         private DialogOption userSelection = DialogOption.NONE;
         private final ThingEditor editor;
 
-        MyDialog(ThingEditor editor) {
+        MyDialog(ThingEditor editor, Window owner) {
+            super(owner);
             this.editor = requireNonNull(editor);
         }
 
@@ -118,9 +119,9 @@ public abstract class ThingEditor extends JPanel {
 
     }
 
-    public MyDialog showInModalDialog() {
+    public MyDialog showInModalDialog(Window owner) {
         initializeGui();
-        final MyDialog dialog = new MyDialog(this);
+        final MyDialog dialog = new MyDialog(this, owner);
         dialog.setLocationByPlatform(true);
         dialog.setTitle(getTitle());
         dialog.initializeGui();

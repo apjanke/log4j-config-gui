@@ -17,8 +17,8 @@ public abstract class LayoutEditor extends ThingEditor {
     private final Layout layout;
 
     private final JLabel contentTypeField = new JLabel();
+    private final JTextArea headerField = new JTextArea();
     private final JLabel footerField = new JLabel();
-    private final JLabel headerField = new JLabel();
 
     /**
      * The subpane containing control widgets that are label/value pairs. This has a
@@ -42,9 +42,11 @@ public abstract class LayoutEditor extends ThingEditor {
     void initializeGui() {
         setLayout(new GridBagLayout());
         setBorder(SwingUtils.createEmptyBorderPx(20));
-        setPreferredSize(px(new Dimension(1200, 200)));
 
         GBC gbc = new GBC();
+
+        headerField.setEditable(false);
+        headerField.setBackground(getBackground());
 
         Object[] arrangement = {
                 "Content Type",     contentTypeField,
@@ -79,7 +81,7 @@ public abstract class LayoutEditor extends ThingEditor {
         requireNonNull(layout);
         if (layout instanceof PatternLayout) {
             return new PatternLayoutEditor((PatternLayout) layout);
-        } else if (layout instanceof EnhancedPatternLayout) {
+        } else if (layout.getClass().getName().equals("org.apache.log4j.EnhancedPatternLayout")) {
             return new EnhancedPatternLayoutEditor((EnhancedPatternLayout) layout);
         } else if (layout instanceof TTCCLayout) {
             return new TTCCLayoutEditor((TTCCLayout) layout);

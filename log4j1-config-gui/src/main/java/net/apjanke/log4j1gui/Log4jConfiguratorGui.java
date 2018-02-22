@@ -136,7 +136,7 @@ public class Log4jConfiguratorGui extends JPanel {
         }
         Logger selectedLogger = loggersForRows.get(row);
         LoggerEditor loggerEditor = new LoggerEditor(selectedLogger);
-        JDialog dialog = loggerEditor.showInModalDialog();
+        JDialog dialog = loggerEditor.showInModalDialog(SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
         refreshGui();
     }
@@ -149,7 +149,7 @@ public class Log4jConfiguratorGui extends JPanel {
         }
         AppendersEditor appendersEditor = new AppendersEditor(loggersForRows.get(row));
         appendersEditor.initializeGui();
-        JDialog dialog = appendersEditor.showInModalDialog();
+        JDialog dialog = appendersEditor.showInModalDialog(SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
         refreshGui();
     }
@@ -335,7 +335,7 @@ public class Log4jConfiguratorGui extends JPanel {
         if (layout instanceof PatternLayout) {
             PatternLayout pl = (PatternLayout) layout;
             str = sprintf("\"%s\" (<PL>)",  pl.getConversionPattern());
-        } else if (layout instanceof EnhancedPatternLayout) {
+        } else if (layout.getClass().getName().equals("org.apache.log4j.EnhancedPatternLayout")) {
             EnhancedPatternLayout epl = (EnhancedPatternLayout) layout;
             str = sprintf("\"%s\" (<EPL>)", epl.getConversionPattern());
         } else {

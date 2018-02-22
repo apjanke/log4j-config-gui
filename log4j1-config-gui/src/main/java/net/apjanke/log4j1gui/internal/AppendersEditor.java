@@ -32,6 +32,7 @@ public class AppendersEditor extends JPanel {
 
     private static final int LAYOUT_COLUMN = 2;
     private static final java.util.List<Integer> editableColsList = new ArrayList<>();
+
     static {
         editableColsList.add(1);
     }
@@ -82,10 +83,10 @@ public class AppendersEditor extends JPanel {
         appender = appenders.get(row);
         try {
             AppenderEditor editor = AppenderEditor.createEditorFor(appender);
-            editor.showInModalDialog().setVisible(true);
+            editor.showInModalDialog(SwingUtilities.getWindowAncestor(this)).setVisible(true);
             tableModel.fireTableRowsUpdated(row, row);
         } catch (AppenderEditor.UnrecognizedAppenderException err) {
-            log.error(sprintf("Unrecognized Appender: %s", appender), err);
+            log.debug(sprintf("Unrecognized Appender: %s", appender), err);
             JOptionPane.showMessageDialog(null,
                     sprintf("Editing is not supported for Appender type %s\n\nSorry. :(",
                             appender.getClass().getName()));
@@ -111,7 +112,7 @@ public class AppendersEditor extends JPanel {
                 return;
             }
             LayoutEditor editor = LayoutEditor.createEditorFor(layout);
-            editor.showInModalDialog().setVisible(true);
+            editor.showInModalDialog(SwingUtilities.getWindowAncestor(this)).setVisible(true);
             tableModel.fireTableCellUpdated(row, LAYOUT_COLUMN);
         } catch (Exception err) {
             log.error(sprintf("Error during attempt to Edit Layout"), err);
@@ -182,7 +183,8 @@ public class AppendersEditor extends JPanel {
         popupMenu = new PopupMenu();
         table.setComponentPopupMenu(popupMenu);
 
-        MyCellRenderer cellRenderer = new MyCellRenderer();
+        AppendersCellRenderer cellRenderer = (Configuration.hasLog4jExtras())
+                ? new AppendersCellRendererWithExtras() : new AppendersCellRenderer();
         table.setDefaultRenderer(Class.class, cellRenderer);
         table.setDefaultRenderer(Layout.class, cellRenderer);
         table.setDefaultRenderer(Filter.class, cellRenderer);
@@ -284,8 +286,13 @@ public class AppendersEditor extends JPanel {
         tableModel.setAppenders(Utils.getAllAppenders(logger));
     }
 
-    public JDialog showInModalDialog() {
-        JDialog dialog = new JDialog();
+    public JDialog showInModalDialog(Window owner) {
+        JDialog dialog = new JDialog(owner);
+        buildModalDialog(dialog);
+        return dialog;
+    }
+
+    private void buildModalDialog(JDialog dialog) {
         dialog.setLocationByPlatform(true);
         dialog.setLayout(new BorderLayout());
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -353,7 +360,6 @@ public class AppendersEditor extends JPanel {
         dialog.setJMenuBar(menuBar);
 
         dialog.setModal(true);
-        return dialog;
     }
 
     private class SetLayoutMenuItem extends JMenuItem {
@@ -381,7 +387,7 @@ public class AppendersEditor extends JPanel {
                 LayoutFactory layoutFactory = new StandardLayoutFactory();
                 Layout newLayout = layoutFactory.createLayout(layoutClass);
                 LayoutEditor editor = LayoutEditor.createEditorFor(newLayout);
-                LayoutEditor.MyDialog dialog = editor.showInModalDialog();
+                LayoutEditor.MyDialog dialog = editor.showInModalDialog(SwingUtilities.getWindowAncestor(this));
                 dialog.setVisible(true);
                 if (dialog.getUserSelection() == DialogOption.OK) {
                     appender.setLayout(newLayout);
@@ -393,30 +399,5 @@ public class AppendersEditor extends JPanel {
         }
     }
 
-    private static class MyCellRenderer extends DefaultTableCellRenderer {
-        @Override
-        public void setValue(Object value) {
-            String str;
-            if (null == value) {
-                str = "";
-            } else if (value instanceof Class) {
-                str = nameWithoutLog4jPackage(((Class) value).getName());
-            } else if (value instanceof PatternLayout) {
-                str = Log4jConfiguratorGui.layoutString((PatternLayout) value);
-            } else if (value instanceof EnhancedPatternLayout) {
-                str = Log4jConfiguratorGui.layoutString((EnhancedPatternLayout) value);
-            } else if (value instanceof Layout) {
-                str = nameWithoutLog4jPackage(value.toString());
-            } else if (value instanceof Filter) {
-                str = nameWithoutLog4jPackage(value.toString());
-            } else if (value instanceof ErrorHandler) {
-                str = nameWithoutLog4jPackage(value.toString());
-            } else {
-                str = "" + value;
-            }
-            setText(str);
-        }
-
-    }
 
 }

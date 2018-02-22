@@ -152,12 +152,16 @@ public class Log4jConfiguratorGuiDemo {
             LogManager.getLogger(loggerName);
         }
         getLog("foo.bar.db.Connection").setLevel(Level.DEBUG);
+        Logger lg;
         // Add example loggers using specific features
-        EnhancedPatternLayout myLayout = new EnhancedPatternLayout("%-6r [%15.15t] %-5p %30.30c %x - %m%n");
-        Logger lg = getLog("foo.bar.enhancedpattern.SomeClass");
-        ConsoleAppender consoleAppender = new ConsoleAppender();
-        consoleAppender.setLayout(myLayout);
-        lg.addAppender(consoleAppender);
+        if (Configuration.hasLog4jExtras()) {
+            EnhancedPatternLayout myEnhLayout = new EnhancedPatternLayout("%-6r [%15.15t] %-5p %30.30c %x - %m%n");
+            lg = getLog("foo.bar.enhancedpattern.SomeClass");
+            ConsoleAppender consoleAppender = new ConsoleAppender();
+            consoleAppender.setLayout(myEnhLayout);
+            lg.addAppender(consoleAppender);
+        }
+        PatternLayout myLayout = new PatternLayout("%-6r [%15.15t] %-5p %30.30c %x - %m%n");
         lg = getLog("foo.bar.withfilters.Filter1");
         Appender appender = new ConsoleAppender();
         appender.setLayout(new PatternLayout("Hello: %-6r [%15.15t] %-5p %30.30c %x - %m%n"));

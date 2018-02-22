@@ -27,6 +27,9 @@ class HTMLLayoutEditor extends LayoutEditor {
         JComponent p = controlPane;
         GBC gbc = controlPaneGBC;
 
+        titleField.setPreferredSize(textFieldPreferredSize);
+        titleField.setMinimumSize(textFieldPreferredSize);
+
         Object[] arrangement = {
                 "Title",      titleField,
                 "Location Info",    locationInfoField,
