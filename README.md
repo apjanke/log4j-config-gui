@@ -1,7 +1,7 @@
 log4j-config-gui
 ============================
 
-This is a configuration GUI for Apache Log4j 1.2.
+This is a configuration GUI for [Apache Log4j 1.2](https://logging.apache.org/log4j/1.2/).
 
 It supports in-process configuration of Log4j in the current program, so it's useful for GUI applications that use Log4j. It does not support configuration of Log4j in external processes.
 
