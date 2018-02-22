@@ -1,6 +1,12 @@
 TODO for log4j1-config-gui
 =============================
 
+##  ISSUES
+
+* In the Appender editor, changes to the filter list take effect right away (instead of waiting for OK to be pressed), and cause the appender editor GUI to reload from the underlying appender object, causing unsaved property changes to be lost. Same with the appender list in the Logger editor, I think.
+
+##  TODO
+
 * Add Cmd-W for close; other hotkey support
 * Friendlier validation and error handling for numeric-valued text fields
 * Extensible menu options for appender editors
