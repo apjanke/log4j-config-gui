@@ -46,3 +46,7 @@ Don't touch the `net.apjanke.log4j1gui.internal` stuff. Like the name says, that
 `log4j-config-gui` is developed by [Andrew Janke](https://apjanke.net). The project home page is the [log4j-config-gui repo on GitHub](https://github.com/apjanke/log4j-config-gui).
 
 This is not an official Apache project. This is just something I wrote that works with Log4j.
+
+##  License
+
+`log4j-config-gui` is dual licensed under the Apache 2.0 and BSD 2-clause licenses. Use whichever one you wish.
